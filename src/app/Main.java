@@ -24,16 +24,19 @@ public class Main {
 
     // Метод валідації наявних коштів
     private static void validateAmount(double balance, double withdrawal){
-        if (withdrawal > balance) {
-            try {
+        try {
+            if (withdrawal > balance) {
                 throw new FundsException("Insufficient funds!");
-            } catch (FundsException ex) {
-                System.out.println(ex.getMessage());
+            } else {
+                balance = getBalance(balance, withdrawal);
+                System.out.printf("Funds are OK. Purchase paid." +
+                        "%nBalance is USD %.2f", balance);
             }
-        } else {
-            balance = getBalance(balance, withdrawal);
-            System.out.printf("Funds are OK. Purchase paid." +
-                    "%nBalance is USD %.2f", balance);
+        } catch (FundsException ex) {
+            System.out.println(ex.getMessage());
+        } catch (Exception ex){
+            System.out.println("Un excepted behavior\nCheck logs");
+            // Record to logs Logger.record(ex.stackTrace()) or some like this
         }
     }
 
